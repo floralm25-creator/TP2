@@ -7,6 +7,7 @@ import Listado from '../paginas/listado';
 import Detalle from '../paginas/detalle';
 import Favoritos from '../paginas/favoritos';
 import NoEncontrado from '../paginas/noEncontrado';
+import Login from '../paginas/login';
 
 export default function Enrutador() {
   return (
@@ -17,6 +18,7 @@ export default function Enrutador() {
         <Route path="personajes/:id" element={<Detalle />} />
         <Route path="favoritos" element={<Favoritos />} />
         <Route path="*" element={<NoEncontrado />} />
+        <Route path="login" element={<Login />} />
       </Route>
     </Routes>
   );
