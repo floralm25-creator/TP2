@@ -365,3 +365,78 @@ header nav a.activo {
     font-size: 0.9rem; 
   }
 }
+
+/* ==========================================================================
+   ESTILOS PARA FORMULARIOS Y ALERTAS (Parcial 2: Login y Comunidad)
+   ========================================================================== */
+
+/* 1. Estética de los campos de texto (Inputs) */
+.tarjeta-detalle input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-family: inherit;
+  font-size: 1rem;
+  background-color: #f9fafb;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Efecto sutil al pasar el mouse por encima del input */
+@media (hover: hover) {
+  .tarjeta-detalle input:hover {
+    border-color: #9ca3af;
+  }
+}
+
+/* Cuando el usuario hace clic en el input para escribir (aprovecha el color foco que ya tenías) */
+.tarjeta-detalle input:focus {
+  background-color: white;
+  outline: 3px solid var(--color-foco);
+  outline-offset: 1px;
+}
+
+/* 2. Cajas de Alertas y Mensajes de Estado */
+.mensaje-estado {
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: aparecer 0.3s ease-out; /* Pequeña animación para que no aparezca de golpe */
+}
+
+/* Diseño específico para los errores (Login fallido o notificaciones bloqueadas) */
+.mensaje-estado.error {
+  background-color: #fee2e2; /* Fondo rojo bien pastel */
+  color: #b91c1c;            /* Texto rojo oscuro para buen contraste */
+  border: 1px solid #f87171;
+}
+
+/* Animación suave para cuando aparecen los errores o alertas */
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   AJUSTES PARA LA GRILLA DE COMUNIDAD
+   ========================================================================== */
+/* Para que el texto "Creado por otro usuario" quede prolijo en las tarjetas */
+.texto-ajeno {
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-align: center;
+  margin: auto;
+  padding: 0.5rem;
+  font-style: italic;
+}
