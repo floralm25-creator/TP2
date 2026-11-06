@@ -32,6 +32,7 @@ export default function Layout() {
             <NavLink to="/favoritos" className={({ isActive }) => isActive ? 'activo' : ''}>
               Favoritos
             </NavLink>
+            <NavLink to="/creaciones">Comunidad</NavLink>
             
             {/* Lógica de sesión: Si hay usuario, mostramos "Salir". Si no, "Ingresar" */}
             {usuario ? (

@@ -8,6 +8,7 @@ import Detalle from '../paginas/detalle';
 import Favoritos from '../paginas/favoritos';
 import NoEncontrado from '../paginas/noEncontrado';
 import Login from '../paginas/login';
+import Creaciones from '../paginas/creaciones';
 
 export default function Enrutador() {
   return (
@@ -19,6 +20,7 @@ export default function Enrutador() {
         <Route path="favoritos" element={<Favoritos />} />
         <Route path="*" element={<NoEncontrado />} />
         <Route path="login" element={<Login />} />
+        <Route path="creaciones" element={<Creaciones/>}/>
       </Route>
     </Routes>
   );
