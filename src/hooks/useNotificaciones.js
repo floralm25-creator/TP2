@@ -1,30 +1,52 @@
+
 import { useState, useEffect } from 'react';
 
 export default function useNotificaciones() {
   const [permiso, setPermiso] = useState('default');
 
   useEffect(() => {
-    // Verificamos si el navegador soporta la API de notificaciones
     if (!('Notification' in window)) {
-      console.warn('Este navegador no soporta notificaciones web.');
+      console.warn('Este navegador no soporta notificaciones.');
       return;
     }
-    // Leemos cómo está el permiso actualmente (granted, denied, o default)
+
     setPermiso(Notification.permission);
+
+    // Registramos el Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(() => {
+          console.log('Service Worker registrado correctamente');
+        })
+        .catch((error) => {
+          console.error('Error al registrar Service Worker:', error);
+        });
+    }
   }, []);
 
   const pedirPermiso = async () => {
     if (!('Notification' in window)) return;
-    
-    // Le mostramos al usuario el cartelito nativo del sistema
+
     const resultado = await Notification.requestPermission();
     setPermiso(resultado);
   };
 
-  const enviarNotificacion = (titulo, cuerpo) => {
-    if (permiso === 'granted') {
-      // Dispara la alerta visual en el sistema operativo
-      new Notification(titulo, { body: cuerpo });
+  const enviarNotificacion = async (titulo, cuerpo) => {
+    // Consultamos el permiso actualizado
+    if (!('Notification' in window) ||
+        Notification.permission !== 'granted') {
+      return;
+    }
+
+    try {
+      const registro = await navigator.serviceWorker.ready;
+
+      await registro.showNotification(titulo, {
+        body: cuerpo
+      });
+
+    } catch (error) {
+      console.error('Error al mostrar la notificación:', error);
     }
   };
 

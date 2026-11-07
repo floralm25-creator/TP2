@@ -30,13 +30,16 @@ export default function useCreaciones(onNuevoPersonaje) {
           setPersonajes((estadoPrevio) => [payload.new, ...estadoPrevio]);
           // Llamamos a la función de notificación si existe
             if (callbackRef.current) {
-    callbackRef.current(payload.new);
+     callbackRef.current(payload.new, 'INSERT');
   }
         } else if (payload.eventType === 'DELETE') {
           setPersonajes((estadoPrevio) => estadoPrevio.filter(p => p.id !== payload.old.id));
         } else if (payload.eventType === 'UPDATE') {
           setPersonajes((estadoPrevio) => estadoPrevio.map(p => p.id === payload.new.id ? payload.new : p));
-        }
+         if (callbackRef.current) {
+    callbackRef.current(payload.new, 'UPDATE');
+  }
+}
 
       })
       .subscribe();

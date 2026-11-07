@@ -20,14 +20,26 @@ export default function Creaciones() {
   const { usuario } = useAuth();
   const { permiso, pedirPermiso, enviarNotificacion } = useNotificaciones();
 
-  const avisarNuevoPersonaje = (nuevoPersonaje) => {
-    if (usuario && nuevoPersonaje.autor_id !== usuario.id) {
+ 
+const avisarNuevoPersonaje = (personaje, tipoEvento) => {
+  if (usuario && personaje.autor_id !== usuario.id) {
+
+    if (tipoEvento === 'INSERT') {
       enviarNotificacion(
-        "¡Nuevo personaje en la comunidad!", 
-        `Alguien acaba de crear a ${nuevoPersonaje.nombre} (${nuevoPersonaje.especie})`
+        '¡Nuevo personaje en la comunidad!',
+        `Alguien creó a ${personaje.nombre} (${personaje.especie})`
       );
     }
-  };
+
+    if (tipoEvento === 'UPDATE') {
+      enviarNotificacion(
+        '¡Personaje modificado!',
+        `Se modificó a ${personaje.nombre} (${personaje.especie})`
+      );
+    }
+  }
+};
+
 
   const { personajes, cargando, error, agregarPersonaje, editarPersonaje, borrarPersonaje } = useCreaciones(avisarNuevoPersonaje);
 
@@ -89,13 +101,44 @@ export default function Creaciones() {
       <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>Creaciones de la Comunidad</h1>
 
       {/* NOTIFICACIONES */}
-      <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-        {permiso === 'default' && (
-          <button onClick={pedirPermiso} className="btn-principal" style={{ backgroundColor: 'var(--color-foco)', color: 'white', border: 'none' }}>
-            🔔 Activar notificaciones en vivo
-          </button>
-        )}
-      </div>
+     <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
+
+  {permiso === 'default' && (
+    <button
+      onClick={pedirPermiso}
+      className="btn-principal"
+      style={{ backgroundColor: 'var(--color-foco)', color: 'white', border: 'none' }}
+    >
+      🔔 Activar notificaciones
+    </button>
+  )}
+
+  {permiso === 'granted' && (
+    <>
+      <p>✅ Notificaciones habilitadas</p>
+
+      <button
+        onClick={() =>
+          enviarNotificacion(
+            '¡Notificaciones activadas!',
+            'Esta es una prueba de notificaciones.'
+          )
+        }
+        className="btn-principal"
+      >
+        Probar notificación
+      </button>
+    </>
+  )}
+
+  {permiso === 'denied' && (
+    <p>
+      🔕 Las notificaciones están bloqueadas.
+      Podés habilitarlas desde los permisos del navegador.
+    </p>
+  )}
+
+</div>
 
       {/* FORMULARIO */}
       <form onSubmit={manejarEnvio} className="tarjeta-detalle" style={{ marginBottom: '3rem', width: '100%', maxWidth: '100%', padding: '2rem' }}>
