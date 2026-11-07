@@ -56,28 +56,3 @@ export default function Layout() {
   );
 }
 
-/*     <NavLink to="/" className={({ isActive }) => isActive ? 'activo' : ''}>
-              Portada
-            </NavLink>
-            <NavLink to="/personajes" className={({ isActive }) => isActive ? 'activo' : ''}>
-              Personajes
-            </NavLink>
-            <NavLink to="/favoritos" className={({ isActive }) => isActive ? 'activo' : ''}>
-              Favoritos
-            </NavLink>
-            <NavLink to="/creaciones">Comunidad</NavLink>
-            
-            {/* Lógica de sesión: Si hay usuario, mostramos "Salir". Si no, "Ingresar" */
-         /*   {usuario ? (
-              <button 
-                onClick={manejarSalida} 
-                className="btn-principal" 
-                style={{ backgroundColor: 'var(--color-texto)', color: 'white' }}
-              >
-                Salir
-              </button>
-            ) : (
-              <NavLink to="/login" className={({ isActive }) => isActive ? 'activo' : ''}>
-                Ingresar
-              </NavLink>
-            )}*/

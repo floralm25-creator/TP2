@@ -109,7 +109,7 @@ const avisarNuevoPersonaje = (personaje, tipoEvento) => {
       className="btn-principal"
       style={{ backgroundColor: 'var(--color-foco)', color: 'white', border: 'none' }}
     >
-      🔔 Activar notificaciones
+      Activar notificaciones
     </button>
   )}
 
@@ -117,17 +117,7 @@ const avisarNuevoPersonaje = (personaje, tipoEvento) => {
     <>
       <p>✅ Notificaciones habilitadas</p>
 
-      <button
-        onClick={() =>
-          enviarNotificacion(
-            '¡Notificaciones activadas!',
-            'Esta es una prueba de notificaciones.'
-          )
-        }
-        className="btn-principal"
-      >
-        Probar notificación
-      </button>
+      
     </>
   )}
 
