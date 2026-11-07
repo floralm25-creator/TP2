@@ -1,4 +1,3 @@
-
 export function MensajeCargando() {
   return (
     <div className="mensaje-estado">

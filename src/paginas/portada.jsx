@@ -22,7 +22,7 @@ export default function Portada() {
         Iniciá sesión o registrate para acceder al contenido exclusivo.
         </p>
       
-        {/* Contenedor flex para mantener los botones uno al lado del otro */}
+       
         <div 
         className="botones-portada" 
         style={{ 

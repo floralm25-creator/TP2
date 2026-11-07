@@ -1,13 +1,9 @@
 import { Routes, Route } from 'react-router';
 import Layout from '../componentes/layout';
 import RutaPrivada from '../componentes/rutaPrivada';
-
-
-
 import Portada from '../paginas/portada';
 import Listado from '../paginas/listado';
 import Detalle from '../paginas/detalle';
-
 import NoEncontrado from '../paginas/noEncontrado';
 import Login from '../paginas/login';
 import Creaciones from '../paginas/creaciones';
@@ -17,17 +13,12 @@ export default function Enrutador() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        
-        {/* Rutas públicas */}
         <Route index element={<Portada />} />
         <Route path="login" element={<Login />} />
         <Route path="registro" element={<Registro />} />
-
-        {/* Rutas privadas */}
         <Route element={<RutaPrivada />}>
           <Route path="personajes" element={<Listado />} />
           <Route path="personajes/:id" element={<Detalle />} />
-        
           <Route path="creaciones" element={<Creaciones />} />
         </Route>
 

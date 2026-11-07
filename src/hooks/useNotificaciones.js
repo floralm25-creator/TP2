@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 export default function useNotificaciones() {
@@ -12,7 +11,7 @@ export default function useNotificaciones() {
 
     setPermiso(Notification.permission);
 
-    // Registramos el Service Worker
+    
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js')
         .then(() => {
@@ -32,7 +31,7 @@ export default function useNotificaciones() {
   };
 
   const enviarNotificacion = async (titulo, cuerpo) => {
-    // Consultamos el permiso actualizado
+    
     if (!('Notification' in window) ||
         Notification.permission !== 'granted') {
       return;

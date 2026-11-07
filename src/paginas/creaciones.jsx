@@ -5,7 +5,7 @@ import useNotificaciones from '../hooks/useNotificaciones';
 import RenderizadorEstados from '../componentes/render.estados';
 
 export default function Creaciones() {
-  // Estados del formulario
+  
   const [nombre, setNombre] = useState('');
   const [especie, setEspecie] = useState('');
   const [estado, setEstado] = useState('');
@@ -13,7 +13,7 @@ export default function Creaciones() {
   const [origen, setOrigen] = useState('');
   const [archivo, setArchivo] = useState(null);
   
-  // Estado para saber si estamos editando
+  
   const [editandoId, setEditandoId] = useState(null);
   const [cargandoAccion, setCargandoAccion] = useState(false);
 
@@ -51,7 +51,7 @@ const avisarNuevoPersonaje = (personaje, tipoEvento) => {
     setOrigen('');
     setArchivo(null);
     setEditandoId(null);
-    document.getElementById('input-imagen').value = ''; // Resetea el input file
+    document.getElementById('input-imagen').value = ''; 
   };
 
   const manejarEnvio = async (e) => {
@@ -83,7 +83,7 @@ const avisarNuevoPersonaje = (personaje, tipoEvento) => {
     setGenero(personaje.genero || '');
     setOrigen(personaje.origen || '');
     setEditandoId(personaje.id);
-    window.scrollTo({ top: 0, behavior: 'smooth' }); // Sube la pantalla al formulario
+    window.scrollTo({ top: 0, behavior: 'smooth' }); 
   };
 
   const manejarBorrado = async (id) => {
@@ -115,7 +115,7 @@ const avisarNuevoPersonaje = (personaje, tipoEvento) => {
 
   {permiso === 'granted' && (
     <>
-      <p>✅ Notificaciones habilitadas</p>
+      <p>Notificaciones habilitadas</p>
 
       
     </>
@@ -123,7 +123,7 @@ const avisarNuevoPersonaje = (personaje, tipoEvento) => {
 
   {permiso === 'denied' && (
     <p>
-      🔕 Las notificaciones están bloqueadas.
+      Las notificaciones están bloqueadas.
       Podés habilitarlas desde los permisos del navegador.
     </p>
   )}
@@ -196,7 +196,7 @@ const avisarNuevoPersonaje = (personaje, tipoEvento) => {
           {personajes.map((p) => (
             <article key={p.id} className="tarjeta" style={{ display: 'flex', flexDirection: 'column' }}>
               
-              {/* Vista previa de la imagen dentro de la tarjeta */}
+              
               {p.imagen ? (
                 <img 
                   src={p.imagen} 
@@ -247,5 +247,5 @@ const avisarNuevoPersonaje = (personaje, tipoEvento) => {
   );
 }
 
-// Estilo en línea para limpiar un poco el JSX arriba
+
 const inputStyle = { flex: 1, minWidth: '150px', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #ccc' };

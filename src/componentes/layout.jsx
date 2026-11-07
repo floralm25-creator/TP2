@@ -1,18 +1,18 @@
 import { Outlet, NavLink, useLocation, useNavigate } from 'react-router';
-import useAuth from '../hooks/useAuth'; // Importamos tu hook de autenticación
+import useAuth from '../hooks/useAuth'; 
 
 export default function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
   const esPortada = location.pathname === '/';
   
-  // Traemos el estado del usuario y la función para desloguearse
+  
   const { usuario, salir } = useAuth();
 
   const manejarSalida = async () => {
     try {
-      await salir(); // Esto borra la sesión de Supabase
-      navigate('/login'); // Redirigimos al usuario a la pantalla de ingreso
+      await salir(); 
+      navigate('/login'); 
     } catch (error) {
       console.error("Error al cerrar sesión", error);
     }

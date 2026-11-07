@@ -28,7 +28,7 @@ export default function useCreaciones(onNuevoPersonaje) {
         
         if (payload.eventType === 'INSERT') {
           setPersonajes((estadoPrevio) => [payload.new, ...estadoPrevio]);
-          // Llamamos a la función de notificación si existe
+         
             if (callbackRef.current) {
      callbackRef.current(payload.new, 'INSERT');
   }
@@ -47,9 +47,9 @@ export default function useCreaciones(onNuevoPersonaje) {
     return () => {
       supabase.removeChannel(canal);
     };
-  }, []); // onNuevoPersonaje no se pone en dependencias para no re-renderizar infinitamente
+  }, []); 
 
-  // Función interna para subir la imagen al Storage
+ 
   const subirImagen = async (archivo) => {
     if (!archivo) return null;
     const extension = archivo.name.split('.').pop();
@@ -61,7 +61,7 @@ export default function useCreaciones(onNuevoPersonaje) {
 
     if (error) throw error;
 
-    // Obtener la URL pública para guardarla en la base de datos
+    
     const { data: urlData } = supabase.storage
       .from('imagenes_personajes')
       .getPublicUrl(nombreArchivo);
@@ -83,7 +83,7 @@ export default function useCreaciones(onNuevoPersonaje) {
   };
 
   const editarPersonaje = async (id, datos, archivoImagen) => {
-    let urlImagen = datos.imagen; // Mantenemos la actual por defecto
+    let urlImagen = datos.imagen;
     if (archivoImagen) {
       urlImagen = await subirImagen(archivoImagen);
     }

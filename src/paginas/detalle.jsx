@@ -4,18 +4,12 @@ import useFetch from '../hooks/useFetch.js';
 import RenderizadorEstados from '../componentes/render.estados.jsx';
 
 export default function Detalle() {
-  // 1. Obtenemos el ID de la URL usando useParams
-  const { id } = useParams();
   
-  // 2. Usamos useNavigate para el botón de "volver atrás"
+  const { id } = useParams();
   const navigate = useNavigate();
-
-  // 3. Reutilizamos el Hook genérico para pedir los datos de un solo personaje
   const { datos, cargando, error, vacio } = useFetch(`/character/${id}`);
 
 
-  // CORRECCIÓN DEL PROFESOR: Si ya terminó de cargar y la API tira error (404), 
-  // mostramos el texto exacto "no existe" y el botón para volver.
   if (!cargando && (error || vacio || !datos)) {
     return (
       <section className="pagina-detalle">
@@ -31,21 +25,19 @@ export default function Detalle() {
 
   return (
     <section className="pagina-detalle">
-      {/* Botón para volver atrás */}
+      
       <button onClick={() => navigate(-1)} className="btn-volver">
         &larr; Volver
       </button>
 
-      {/* Le pasamos error=false y vacio=false porque ya los atajamos arriba. 
-          El renderizador ahora solo se encarga del estado "cargando" */}
       <RenderizadorEstados cargando={cargando} error={false} vacio={false}>
-        {/* Si los datos existen, renderizamos la tarjeta completa */}
+       
         {datos && (
           <article className="tarjeta-detalle">
             <h1>{datos.name}</h1>
             <img 
               src={datos.image} 
-              alt={`Imagen de ${datos.name}`} // Obligatorio: Texto alternativo en imágenes
+              alt={`Imagen de ${datos.name}`} 
             />
             
             <div className="info-personaje">

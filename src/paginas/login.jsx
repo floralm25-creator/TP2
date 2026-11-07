@@ -9,7 +9,7 @@ export default function Login() {
   const [error, setError] = useState(null);
   const [cargandoAccion, setCargandoAccion] = useState(false);
 
-  // Traemos las funciones de nuestro Hook
+ 
   const { ingresar, registrar } = useAuth();
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export default function Login() {
     
     try {
       await ingresar(email, password);
-      // Si sale bien, lo mandamos directo al listado de personajes
+      
       navigate('/personajes'); 
     } catch (err) {
       setError('Error al ingresar: ' + err.message);
@@ -46,11 +46,11 @@ export default function Login() {
 
   return (
     <section className="pagina-detalle">
-      {/* Reutilizamos la clase tarjeta-detalle para mantener la estética blanca y centrada */}
+     
       <form className="tarjeta-detalle" style={{ maxWidth: '400px' }}>
         <h1 style={{ marginBottom: '1.5rem' }}>Acceso</h1>
 
-        {/* Mostramos el error si el usuario se equivoca de clave */}
+       
         {error && (
           <div className="mensaje-estado error" style={{ width: '100%', marginBottom: '1rem', padding: '1rem' }}>
             <p>{error}</p>
@@ -76,7 +76,7 @@ export default function Login() {
           />
         </div>
 
-        {/* Los botones usan las clases mobile-first que definiste en el CSS */}
+        
         <div className="acciones-tarjeta" style={{ width: '100%' }}>
           <button 
             onClick={manejarIngreso} 

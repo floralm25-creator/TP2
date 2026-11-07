@@ -383,11 +383,9 @@ header nav a.activo {
   }
 }
 
-/* ==========================================================================
-   ESTILOS PARA FORMULARIOS Y ALERTAS (Parcial 2: Login y Comunidad)
-   ========================================================================== */
 
-/* 1. Estética de los campos de texto (Inputs) */
+
+
 .tarjeta-detalle input {
   width: 100%;
   padding: 0.8rem 1rem;
@@ -399,21 +397,21 @@ header nav a.activo {
   transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-/* Efecto sutil al pasar el mouse por encima del input */
+
 @media (hover: hover) {
   .tarjeta-detalle input:hover {
     border-color: #9ca3af;
   }
 }
 
-/* Cuando el usuario hace clic en el input para escribir (aprovecha el color foco que ya tenías) */
+
 .tarjeta-detalle input:focus {
   background-color: white;
   outline: 3px solid var(--color-foco);
   outline-offset: 1px;
 }
 
-/* 2. Cajas de Alertas y Mensajes de Estado */
+
 .mensaje-estado {
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
@@ -423,17 +421,17 @@ header nav a.activo {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  animation: aparecer 0.3s ease-out; /* Pequeña animación para que no aparezca de golpe */
+  animation: aparecer 0.3s ease-out; 
 }
 
-/* Diseño específico para los errores (Login fallido o notificaciones bloqueadas) */
+
 .mensaje-estado.error {
-  background-color: #fee2e2; /* Fondo rojo bien pastel */
-  color: #b91c1c;            /* Texto rojo oscuro para buen contraste */
+  background-color: #fee2e2; 
+  color: #b91c1c;            
   border: 1px solid #f87171;
 }
 
-/* Animación suave para cuando aparecen los errores o alertas */
+
 @keyframes aparecer {
   from {
     opacity: 0;
@@ -445,10 +443,7 @@ header nav a.activo {
   }
 }
 
-/* ==========================================================================
-   AJUSTES PARA LA GRILLA DE COMUNIDAD
-   ========================================================================== */
-/* Para que el texto "Creado por otro usuario" quede prolijo en las tarjetas */
+
 .texto-ajeno {
   font-size: 0.85rem;
   color: #6b7280;
@@ -458,7 +453,7 @@ header nav a.activo {
   font-style: italic;
 }
 
-/* --- CONTENEDORES --- */
+
 .tarjeta-detalle {
   background-color: #ffffff;
   border-radius: 12px;
@@ -468,13 +463,12 @@ header nav a.activo {
 
 .grilla-personajes {
   display: grid;
-  /* Grilla responsiva: se adapta sola al tamaño de la pantalla */
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1.5rem;
   margin-top: 2rem;
 }
 
-/* --- TARJETAS DE PERSONAJE --- */
+
 .tarjeta {
   background-color: #ffffff;
   border-radius: 12px;

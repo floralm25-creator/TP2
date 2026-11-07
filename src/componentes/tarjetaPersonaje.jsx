@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router';
 
-
 export default function TarjetaPersonaje({ personaje }) {
   const navigate = useNavigate();
 
- 
 
   return (
     <article className="tarjeta">
