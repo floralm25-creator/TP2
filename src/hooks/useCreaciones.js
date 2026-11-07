@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../api/supabase';
 
 export default function useCreaciones(onNuevoPersonaje) {
   const [personajes, setPersonajes] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
-
+   const callbackRef = useRef(onNuevoPersonaje);
+ callbackRef.current = onNuevoPersonaje;
   useEffect(() => {
     const traerDatos = async () => {
       const { data, error } = await supabase
@@ -28,7 +29,9 @@ export default function useCreaciones(onNuevoPersonaje) {
         if (payload.eventType === 'INSERT') {
           setPersonajes((estadoPrevio) => [payload.new, ...estadoPrevio]);
           // Llamamos a la función de notificación si existe
-          if (onNuevoPersonaje) onNuevoPersonaje(payload.new);
+            if (callbackRef.current) {
+    callbackRef.current(payload.new);
+  }
         } else if (payload.eventType === 'DELETE') {
           setPersonajes((estadoPrevio) => estadoPrevio.filter(p => p.id !== payload.old.id));
         } else if (payload.eventType === 'UPDATE') {
