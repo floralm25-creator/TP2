@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router';
 import useFetch from '../hooks/useFetch.js';
-import useFavoritos from '../hooks/useFavoritos.js';
+
 import RenderizadorEstados from '../componentes/render.estados.jsx';
 
 export default function Detalle() {
@@ -13,8 +13,6 @@ export default function Detalle() {
   // 3. Reutilizamos el Hook genérico para pedir los datos de un solo personaje
   const { datos, cargando, error, vacio } = useFetch(`/character/${id}`);
 
-  // 4. Traemos la lógica de favoritos
-  const { alternarFavorito, esFavorito } = useFavoritos();
 
   // CORRECCIÓN DEL PROFESOR: Si ya terminó de cargar y la API tira error (404), 
   // mostramos el texto exacto "no existe" y el botón para volver.
@@ -57,13 +55,7 @@ export default function Detalle() {
               <p><strong>Origen:</strong> {datos.origin?.name}</p>
             </div>
 
-            <button 
-              onClick={() => alternarFavorito(datos)}
-              aria-pressed={esFavorito(datos.id)} // Obligatorio: accesibilidad
-              className="btn-favorito"
-            >
-              {esFavorito(datos.id) ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
-            </button>
+     
           </article>
         )}
       </RenderizadorEstados>

@@ -23,7 +23,40 @@ export default function Layout() {
       {!esPortada && (
         <header>
           <nav>
-            <NavLink to="/" className={({ isActive }) => isActive ? 'activo' : ''}>
+      <nav>
+  <NavLink to="/">Portada</NavLink>
+
+  {usuario && (
+    <>
+      <NavLink to="/personajes">Personajes</NavLink>
+      
+      <NavLink to="/creaciones">Comunidad</NavLink>
+
+      <button
+        onClick={manejarSalida}
+        className="btn-principal"
+      >
+        Salir
+      </button>
+    </>
+  )}
+
+  {!usuario && (
+    <NavLink to="/login">Ingresar</NavLink>
+  )}
+</nav>
+          </nav>
+        </header>
+      )}
+      
+      <main>
+        <Outlet />
+      </main>
+    </div>
+  );
+}
+
+/*     <NavLink to="/" className={({ isActive }) => isActive ? 'activo' : ''}>
               Portada
             </NavLink>
             <NavLink to="/personajes" className={({ isActive }) => isActive ? 'activo' : ''}>
@@ -34,8 +67,8 @@ export default function Layout() {
             </NavLink>
             <NavLink to="/creaciones">Comunidad</NavLink>
             
-            {/* Lógica de sesión: Si hay usuario, mostramos "Salir". Si no, "Ingresar" */}
-            {usuario ? (
+            {/* Lógica de sesión: Si hay usuario, mostramos "Salir". Si no, "Ingresar" */
+         /*   {usuario ? (
               <button 
                 onClick={manejarSalida} 
                 className="btn-principal" 
@@ -47,14 +80,4 @@ export default function Layout() {
               <NavLink to="/login" className={({ isActive }) => isActive ? 'activo' : ''}>
                 Ingresar
               </NavLink>
-            )}
-          </nav>
-        </header>
-      )}
-      
-      <main>
-        <Outlet />
-      </main>
-    </div>
-  );
-}
+            )}*/

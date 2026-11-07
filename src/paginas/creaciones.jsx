@@ -5,16 +5,22 @@ import useNotificaciones from '../hooks/useNotificaciones';
 import RenderizadorEstados from '../componentes/render.estados';
 
 export default function Creaciones() {
+  // Estados del formulario
   const [nombre, setNombre] = useState('');
   const [especie, setEspecie] = useState('');
+  const [estado, setEstado] = useState('');
+  const [genero, setGenero] = useState('');
+  const [origen, setOrigen] = useState('');
+  const [archivo, setArchivo] = useState(null);
+  
+  // Estado para saber si estamos editando
+  const [editandoId, setEditandoId] = useState(null);
   const [cargandoAccion, setCargandoAccion] = useState(false);
 
   const { usuario } = useAuth();
   const { permiso, pedirPermiso, enviarNotificacion } = useNotificaciones();
 
-  // Función que le pasamos al hook de base de datos para que dispare al recibir un INSERT
   const avisarNuevoPersonaje = (nuevoPersonaje) => {
-    // Evitamos que nos notifique de nuestros propios personajes
     if (usuario && nuevoPersonaje.autor_id !== usuario.id) {
       enviarNotificacion(
         "¡Nuevo personaje en la comunidad!", 
@@ -23,19 +29,34 @@ export default function Creaciones() {
     }
   };
 
-  // Traemos los datos y le inyectamos la función de notificar
-  const { personajes, cargando, error, agregarPersonaje, borrarPersonaje } = useCreaciones(avisarNuevoPersonaje);
+  const { personajes, cargando, error, agregarPersonaje, editarPersonaje, borrarPersonaje } = useCreaciones(avisarNuevoPersonaje);
+
+  const limpiarFormulario = () => {
+    setNombre('');
+    setEspecie('');
+    setEstado('');
+    setGenero('');
+    setOrigen('');
+    setArchivo(null);
+    setEditandoId(null);
+    document.getElementById('input-imagen').value = ''; // Resetea el input file
+  };
 
   const manejarEnvio = async (e) => {
     e.preventDefault();
-    if (!nombre || !especie) return;
+    if (!nombre || !especie) return alert("Nombre y especie son obligatorios");
     
     setCargandoAccion(true);
     try {
-      await agregarPersonaje(nombre, especie);
-      // Solo limpiamos los inputs; la tarjeta aparece sola gracias a la suscripción "En vivo"
-      setNombre('');
-      setEspecie('');
+      const datos = { nombre, especie, estado, genero, origen };
+      
+      if (editandoId) {
+        await editarPersonaje(editandoId, datos, archivo);
+      } else {
+        await agregarPersonaje(datos, archivo);
+      }
+      
+      limpiarFormulario();
     } catch (err) {
       alert("Error al guardar: " + err.message);
     } finally {
@@ -43,93 +64,147 @@ export default function Creaciones() {
     }
   };
 
+  const prepararEdicion = (personaje) => {
+    setNombre(personaje.nombre || '');
+    setEspecie(personaje.especie || '');
+    setEstado(personaje.estado || '');
+    setGenero(personaje.genero || '');
+    setOrigen(personaje.origen || '');
+    setEditandoId(personaje.id);
+    window.scrollTo({ top: 0, behavior: 'smooth' }); // Sube la pantalla al formulario
+  };
+
   const manejarBorrado = async (id) => {
     if (!window.confirm("¿Seguro que querés borrar este personaje?")) return;
-    
     try {
       await borrarPersonaje(id);
+      if (editandoId === id) limpiarFormulario();
     } catch (err) {
       alert("Error al borrar: " + err.message);
     }
   };
 
-  // Validación de seguridad visual: Si no hay usuario logueado, no mostramos nada
-  if (!usuario) {
-    return (
-      <section className="pagina-detalle">
-        <div className="mensaje-estado error">
-          Tenés que ingresar a tu cuenta para ver o crear personajes.
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section style={{ padding: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
       <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>Creaciones de la Comunidad</h1>
 
-      {/* SECCIÓN DE LA API DEL TELÉFONO: Manejo visual de los permisos */}
+      {/* NOTIFICACIONES */}
       <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
         {permiso === 'default' && (
           <button onClick={pedirPermiso} className="btn-principal" style={{ backgroundColor: 'var(--color-foco)', color: 'white', border: 'none' }}>
             🔔 Activar notificaciones en vivo
           </button>
         )}
-        
-        {permiso === 'denied' && (
-          <div className="mensaje-estado error" style={{ maxWidth: '600px', margin: '0 auto', padding: '1rem' }}>
-            <strong>Notificaciones bloqueadas:</strong> Decidiste no recibir alertas. 
-            Si querés enterarte al instante de las novedades, podés activarlas desde el candado en la barra de direcciones de tu navegador.
-          </div>
-        )}
       </div>
 
-      {/* FORMULARIO DE CREACIÓN */}
-      <form onSubmit={manejarEnvio} className="tarjeta-detalle" style={{ marginBottom: '3rem', width: '100%', maxWidth: '100%' }}>
-        <h2>Crear nuevo personaje</h2>
-        <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap', width: '100%' }}>
-          <input 
-            type="text" 
-            placeholder="Nombre del personaje" 
-            value={nombre} 
-            onChange={(e) => setNombre(e.target.value)} 
-            style={{ flex: 1, minWidth: '200px', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #ccc' }}
-          />
-          <input 
-            type="text" 
-            placeholder="Especie (ej: Humano, Alien)" 
-            value={especie} 
-            onChange={(e) => setEspecie(e.target.value)}
-            style={{ flex: 1, minWidth: '200px', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #ccc' }} 
-          />
-          <button type="submit" className="btn-principal" disabled={cargandoAccion}>
-            {cargandoAccion ? 'Guardando...' : 'Guardar'}
-          </button>
+      {/* FORMULARIO */}
+      <form onSubmit={manejarEnvio} className="tarjeta-detalle" style={{ marginBottom: '3rem', width: '100%', maxWidth: '100%', padding: '2rem' }}>
+        <h2>{editandoId ? 'Editar personaje' : 'Crear nuevo personaje'}</h2>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1.5rem' }}>
+          
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <input type="text" placeholder="Nombre *" value={nombre} onChange={(e) => setNombre(e.target.value)} required style={inputStyle} />
+            <input type="text" placeholder="Especie *" value={especie} onChange={(e) => setEspecie(e.target.value)} required style={inputStyle} />
+          </div>
+
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <select value={estado} onChange={(e) => setEstado(e.target.value)} style={inputStyle}>
+              <option value="">Estado (Opcional)</option>
+              <option value="Vivo">Vivo</option>
+              <option value="Muerto">Muerto</option>
+              <option value="Desconocido">Desconocido</option>
+            </select>
+            
+            <select value={genero} onChange={(e) => setGenero(e.target.value)} style={inputStyle}>
+              <option value="">Género (Opcional)</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Desconocido">Desconocido</option>
+            </select>
+            
+            <input 
+    type="text" 
+    placeholder="Origen (ej: Tierra, Marte) *" 
+    value={origen} 
+    onChange={(e) => setOrigen(e.target.value)} 
+    style={inputStyle} 
+  />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Imagen del personaje (Opcional):</label>
+            <input 
+              id="input-imagen"
+              type="file" 
+              accept="image/*" 
+              onChange={(e) => setArchivo(e.target.files[0])} 
+              style={{ width: '100%' }}
+            />
+            {editandoId && <small style={{ color: '#666' }}>Dejá esto vacío si no querés cambiar la imagen actual.</small>}
+          </div>
+
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+            <button type="submit" className="btn-principal" disabled={cargandoAccion} style={{ flex: 1 }}>
+              {cargandoAccion ? 'Guardando...' : (editandoId ? 'Actualizar personaje' : 'Guardar personaje')}
+            </button>
+            {editandoId && (
+              <button type="button" onClick={limpiarFormulario} className="btn-secundario" style={{ flex: 1 }}>
+                Cancelar edición
+              </button>
+            )}
+          </div>
         </div>
       </form>
 
-      {/* LISTADO EN VIVO */}
-      <RenderizadorEstados cargando={cargando} error={error} vacio={personajes.length === 0}>
+      {/* GRILLA EN VIVO */}
+      <RenderizadorEstados cargando={cargando} error={error} >
         <div className="grilla-personajes">
           {personajes.map((p) => (
-            <article key={p.id} className="tarjeta">
-              <h3 style={{ color: 'var(--color-primario-oscuro)' }}>{p.nombre}</h3>
-              <p><strong>Especie:</strong> {p.especie}</p>
+            <article key={p.id} className="tarjeta" style={{ display: 'flex', flexDirection: 'column' }}>
               
-              <div className="acciones-tarjeta">
-                {/* REGLA DE NEGOCIO: Cada usuario borra solo lo suyo */}
-                {usuario.id === p.autor_id ? (
-                  <button 
-                    onClick={() => manejarBorrado(p.id)}
-                    style={{ backgroundColor: '#dc2626', color: 'white', border: 'none' }}
-                  >
-                    Borrar mi creación
-                  </button>
-                ) : (
-                  <p style={{ fontSize: '0.85rem', color: '#666', textAlign: 'center', margin: 'auto' }}>
-                    Creado por otro usuario
-                  </p>
-                )}
+              {/* Vista previa de la imagen dentro de la tarjeta */}
+              {p.imagen ? (
+                <img 
+                  src={p.imagen} 
+                  alt={p.nombre} 
+                  style={{ width: '100%', height: '200px', objectFit: 'cover', borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem' }} 
+                />
+              ) : (
+                <div style={{ width: '100%', height: '200px', backgroundColor: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ color: '#64748b' }}>Sin imagen</span>
+                </div>
+              )}
+
+              <div style={{ padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <h3 style={{ color: 'var(--color-primario-oscuro)', margin: '0 0 0.5rem 0' }}>{p.nombre}</h3>
+                <p style={{ margin: '0 0 0.25rem 0' }}><strong>Especie:</strong> {p.especie}</p>
+                {p.estado && <p style={{ margin: '0 0 0.25rem 0' }}><strong>Estado:</strong> {p.estado}</p>}
+                {p.genero && <p style={{ margin: '0 0 0.25rem 0' }}><strong>Género:</strong> {p.genero}</p>}
+                {p.origen && <p style={{ margin: '0 0 1rem 0' }}><strong>Origen:</strong> {p.origen}</p>}
+                
+                <div className="acciones-tarjeta" style={{ marginTop: 'auto', display: 'flex', gap: '0.5rem' }}>
+                  {usuario?.id === p.autor_id ? (
+                    <>
+                      <button 
+                        onClick={() => prepararEdicion(p)}
+                        style={{ flex: 1, backgroundColor: '#3b82f6', color: 'white', border: 'none', padding: '0.5rem', borderRadius: '4px', cursor: 'pointer' }}
+                      >
+                        Editar
+                      </button>
+                      <button 
+                        onClick={() => manejarBorrado(p.id)}
+                        style={{ flex: 1, backgroundColor: '#dc2626', color: 'white', border: 'none', padding: '0.5rem', borderRadius: '4px', cursor: 'pointer' }}
+                      >
+                        Borrar
+                      </button>
+                    </>
+                  ) : (
+                    <p style={{ fontSize: '0.85rem', color: '#666', textAlign: 'center', width: '100%' }}>
+                      Creado por la comunidad
+                    </p>
+                  )}
+                </div>
               </div>
             </article>
           ))}
@@ -138,3 +213,6 @@ export default function Creaciones() {
     </section>
   );
 }
+
+// Estilo en línea para limpiar un poco el JSX arriba
+const inputStyle = { flex: 1, minWidth: '150px', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #ccc' };

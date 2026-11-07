@@ -1,6 +1,9 @@
 import { Link } from 'react-router';
+import { useNavigate } from 'react-router';
 
 export default function Portada() {
+    const navigate = useNavigate();
+
   return (
     <section className="pagina-portada">
       <div className="contenedor-portada">
@@ -15,16 +18,35 @@ export default function Portada() {
 
         <h1>Bienvenido al Explorador</h1>
         
-        <p>
-          Preparate para explorar todo el multiverso. Podrás buscar personajes por nombre, filtrarlos por estado y especie, ver sus detalles completos y guardar tus favoritos para no perderlos de vista en ninguna dimensión.
+       <p style={{ marginBottom: '30px', color: '#666' }}>
+        Iniciá sesión o registrate para acceder al contenido exclusivo.
         </p>
-
-        <div className="acciones-portada">
-          <Link to="/personajes" className="btn-principal btn-grande">
-            Comenzar a explorar
-          </Link>
-        </div>
+      
+        {/* Contenedor flex para mantener los botones uno al lado del otro */}
+        <div 
+        className="botones-portada" 
+        style={{ 
+          display: 'flex', 
+          gap: '20px', 
+          justifyContent: 'center', 
+          alignItems: 'center' 
+        }}
+        >
+        <button 
+          onClick={() => navigate('/login')}
+          className="btn-primario"
+        >
+          Iniciar sesión
+        </button>
         
+        <button 
+          onClick={() => navigate('/registro')}
+          className="btn-secundario"
+        >
+          Registrarse
+        </button>
+        
+      </div>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../api/supabase';
 
-export default function useCreaciones(onNuevoPersonaje) {
+export default function useNotificaciones(onNuevoPersonaje) {
   const [personajes, setPersonajes] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
@@ -28,7 +28,7 @@ export default function useCreaciones(onNuevoPersonaje) {
 
     // 2. OPCIÓN A (En Vivo): Nos suscribimos a los cambios de la tabla
     const canal = supabase
-      .channel('cambios-db')
+      .channel('canal-notificaciones')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'personajes_creados' }, (payload) => {
         
         if (payload.eventType === 'INSERT') {

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import useAuth from '../hooks/useAuth';
+import { Link } from 'react-router';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -56,7 +57,7 @@ export default function Login() {
           </div>
         )}
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', marginBottom: '2rem' }}>
+        <div className="accion-casillas" >
           <input 
             type="email" 
             placeholder="Correo electrónico" 
@@ -85,13 +86,10 @@ export default function Login() {
             {cargandoAccion ? 'Procesando...' : 'Ingresar'}
           </button>
           
-          <button 
-            onClick={manejarRegistro} 
-            disabled={cargandoAccion} 
-            style={{ backgroundColor: 'transparent', color: 'var(--color-texto)' }}
-          >
-            Crear cuenta nueva
-          </button>
+<p className="parrafo">
+  ¿Todavía no tenés una cuenta?
+  <Link to="/registro"> Registrate acá</Link>
+</p>
         </div>
       </form>
     </section>

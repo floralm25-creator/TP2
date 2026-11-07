@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router';
-import useFavoritos from '../hooks/useFavoritos';
+
 
 export default function TarjetaPersonaje({ personaje }) {
   const navigate = useNavigate();
-  const { alternarFavorito, esFavorito } = useFavoritos();
-  const marcado = esFavorito(personaje.id);
+
+ 
 
   return (
     <article className="tarjeta">
@@ -22,11 +22,7 @@ export default function TarjetaPersonaje({ personaje }) {
           Ver detalle
         </button>
 
-        <button 
-          onClick={() => alternarFavorito(personaje)}
-          aria-pressed={marcado} className="btn-favorito">
-          {marcado ? 'Quitar favorito' : 'Guardar favorito'}
-        </button>
+      
       </div>
     </article>
   );

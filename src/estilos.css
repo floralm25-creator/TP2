@@ -243,6 +243,7 @@ header nav a.activo {
   width: fit-content;      
 }
 
+
 .btn-paginacion {
   background-color: var(--color-primario);
   color: white;
@@ -342,8 +343,8 @@ header nav a.activo {
 
 
 .acciones-tarjeta {
-  display: flex;
-  flex-direction: column; 
+ /* display: flex;*/
+ /* flex-direction: column; */
   gap: 0.5rem;
   margin-top: auto; 
 }
@@ -352,6 +353,22 @@ header nav a.activo {
   width: 100%; 
 }
 
+.acciones-tarjeta p{
+  margin: 15px;
+}
+
+.accion-casillas{
+  display: flex;
+  flex-Direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin-Bottom: 2rem;
+}
+.accion-casillas label{
+  
+  text-align: left;
+
+}
 
 @media (min-width: 768px) {
   .acciones-tarjeta {
@@ -439,4 +456,87 @@ header nav a.activo {
   margin: auto;
   padding: 0.5rem;
   font-style: italic;
+}
+
+/* --- CONTENEDORES --- */
+.tarjeta-detalle {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.grilla-personajes {
+  display: grid;
+  /* Grilla responsiva: se adapta sola al tamaño de la pantalla */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* --- TARJETAS DE PERSONAJE --- */
+.tarjeta {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.tarjeta:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.acciones-tarjeta {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1rem;
+}
+
+/* --- BOTONES --- */
+.btn-principal {
+  background-color: #2563eb;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-principal:hover:not(:disabled) {
+  background-color: #1d4ed8;
+}
+
+.btn-principal:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-secundario {
+  background-color: #f1f5f9;
+  color: #334155;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-secundario:hover {
+  background-color: #e2e8f0;
+}
+
+/* --- MENSAJES DE ESTADO --- */
+.mensaje-estado.error {
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  color: #991b1b;
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95rem;
 }
